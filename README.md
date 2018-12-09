@@ -49,12 +49,12 @@ https://github.com/specialistvlad/dut-db-organization-and-knowledges/archive/mas
 ## Запуск
 Перейдите в каталог проекта `cd dut-db-organization-and-knowledges`
 
-Запуск `docker-compose up`
+Выполните команду `docker-compose up`
 
-Это инициирует загрузку всех зависимостей и сборку проекта
+Это инициирует загрузку всех зависимостей и сборку проекта.
 Дождитесь окончания процесса.
 
-Проект доступен по адресу http://localhost:12345
+Проект будет доступен по адресу http://localhost:12345
 
 ## Остановка
 Чтобы остановить приложение выполните:
