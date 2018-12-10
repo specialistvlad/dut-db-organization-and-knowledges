@@ -17,3 +17,20 @@ services:
     logging:
         options:
             max-size: '10m'
+
+  dboak-postgres:
+    container_name: dboak-postgres
+    image: postgres:11
+    command: postgres -c config_file=/postgresql.conf
+    volumes:
+      - ./postgres/postgresql.conf:/postgresql.conf
+      - ./postgres/migration/:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_DB=hero
+    restart: always
+    network_mode: bridge
+    ports:
+      - '23395:5432'
+    logging:
+        options:
+            max-size: '50m'
