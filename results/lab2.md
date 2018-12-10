@@ -61,7 +61,7 @@ EOSQL
 ### Запустим БД
 `docker-compose up`
 
-Ждём пока скачается образ, запустить контейнер, выполнятся миграции.
+Ждём пока скачается образ, запустится контейнер, выполнятся миграции.
 ```
 dut-db-organization-and-knowledges git:(master) ✗ docker-compose up
 Pulling auth-psql (postgres:11)...
@@ -92,3 +92,24 @@ dboak-psql   | The files belonging to this database system will be owned by user
 На скриншоте видно, что БД ожидает подключение.
 
 ## Проверка доступности подключения к БД.
+### Используя консольную программу psql
+Выполняем команду `echo 'select 2 as test_column;' | psql -h localhost -p 23395 -U hero -d hero;`
+
+В результате SQL запрос `select 2 as test_column;` будет перенаправлен через stdin в программу psql, которая подключится с параметрами ` -h localhost -p 23395 -U hero -d hero` к БД, выполнит запрос, завершится и вернет результат
+![Результат работы](./screenshots/lab2-screen-6.png)
+Лог работы БД
+![Результат работы](./screenshots/lab2-screen-7.png)
+### Используя графическую программу PSequel
+Тоже самое но с использованием графической программы с пользовательским интерфейсом.
+
+Окно настройки
+![Результат работы](./screenshots/lab2-screen-2.png)
+
+Лог подключения к БД
+![Результат работы](./screenshots/lab2-screen-4.png)
+
+Интерфейс для ввода и выполнения запросов
+![Результат работы](./screenshots/lab2-screen-5.png)
+
+Лог выполнения запроса в БД
+![Результат работы](./screenshots/lab2-screen-3.png)

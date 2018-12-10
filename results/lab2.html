@@ -50,7 +50,7 @@ psql -v ON_ERROR_STOP=1 --username &quot;$POSTGRES_USER&quot; &lt;&lt;-EOSQL
 EOSQL</code></pre><p>Эта миграция создаст пользователя &quot;hero&quot; и даст ему проставит права доступа внутри БД</p>
 <h3 id="-">Запустим БД</h3>
 <p><code>docker-compose up</code></p>
-<p>Ждём пока скачается образ, запустить контейнер, выполнятся миграции.</p>
+<p>Ждём пока скачается образ, запустится контейнер, выполнятся миграции.</p>
 <pre><code>dut-db-organization-and-knowledges git:(master) ✗ docker-compose up
 Pulling auth-psql (postgres:11)...
 11: Pulling from library/postgres
@@ -73,3 +73,21 @@ Attaching to dboak-psql
 dboak-psql   | The files belonging to this database system will be owned by user &quot;postgres&quot;.
 ...</code></pre><p>Результат работы
 <img src="./screenshots/lab2-screen-1.png" alt="Результат работы"></p>
+<p>На скриншоте видно, что БД ожидает подключение.</p>
+<h2 id="-">Проверка доступности подключения к БД.</h2>
+<h3 id="-psql">Используя консольную программу psql</h3>
+<p>Выполняем команду <code>echo &#39;select 2 as test_column;&#39; | psql -h localhost -p 23395 -U hero -d hero;</code></p>
+<p>В результате SQL запрос <code>select 2 as test_column;</code> будет перенаправлен через stdin в программу psql, которая подключится с параметрами <code>-h localhost -p 23395 -U hero -d hero</code> к БД, выполнит запрос, завершится и вернет результат
+<img src="./screenshots/lab2-screen-6.png" alt="Результат работы">
+Лог работы БД
+<img src="./screenshots/lab2-screen-7.png" alt="Результат работы"></p>
+<h3 id="-psequel">Используя графическую программу PSequel</h3>
+<p>Тоже самое но с использованием графической программы с пользовательским интерфейсом.</p>
+<p>Окно настройки
+<img src="./screenshots/lab2-screen-2.png" alt="Результат работы"></p>
+<p>Лог подключения к БД
+<img src="./screenshots/lab2-screen-4.png" alt="Результат работы"></p>
+<p>Интерфейс для ввода и выполнения запросов
+<img src="./screenshots/lab2-screen-5.png" alt="Результат работы"></p>
+<p>Лог выполнения запроса в БД
+<img src="./screenshots/lab2-screen-3.png" alt="Результат работы"></p>
