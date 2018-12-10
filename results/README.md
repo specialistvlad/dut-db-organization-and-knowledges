@@ -32,8 +32,10 @@
 * [Лабораторная работа 1](lab1.html)
 * [Лабораторная работа 2](lab2.html)
 * [Лабораторная работа 3](lab3.html)
+* [Лабораторная работа 4](lab4.html)
 
 ### Онлайн
 * [Лабораторная работа 1](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab1.md)
 * [Лабораторная работа 2](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab2.md)
 * [Лабораторная работа 3](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab3.md)
+* [Лабораторная работа 4](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab4.md)

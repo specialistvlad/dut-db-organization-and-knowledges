@@ -12,11 +12,11 @@
 ```
 CREATE TABLE book(
   id SERIAL PRIMARY KEY,
-  code VARCHAR(25) NOT NULL,
+  code VARCHAR(25) UNIQUE NOT NULL,
   author VARCHAR(100) NOT NULL,
-  name VARCHAR(100) UNIQUE NOT NULL,
+  name VARCHAR(500) UNIQUE NOT NULL,
   publisher VARCHAR(100) NOT NULL,
-  published_at TIMESTAMP,
+  published_at date,
   pages INTEGER NOT NULL,
   topic VARCHAR(100) NOT NULL,
   costs MONEY NOT NULL,

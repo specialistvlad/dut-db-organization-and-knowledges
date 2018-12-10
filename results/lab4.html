@@ -1,0 +1,62 @@
+<h1 id="-4">Лабораторная работа 4</h1>
+<p>Онлайн версия доступна по <a href="https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab4.md">ссылке</a></p>
+<h2 id="-">План отчёта</h2>
+<ol>
+<li>Наполнение БД данными.</li>
+<li>Проверка данных в БД.</li>
+</ol>
+<h2 id="-">Наполнение БД данными.</h2>
+<ul>
+<li><p>Опишем в файле postgres/migration/3-seed-books.sql миграцию книги</p>
+<pre><code>INSERT INTO book(
+code,
+author,
+name,
+publisher,
+published_at,
+pages,
+topic,
+costs
+)
+VALUES (....значения....);</code></pre></li>
+<li><p>Опишем в файле postgres/migration/3-seed-readers.sql миграцию читатели</p>
+<pre><code>INSERT INTO reader(
+last_name,
+first_name,
+middle_name,
+address,
+home_phone,
+work_phone
+)
+VALUES (....значения....);</code></pre></li>
+<li><p>Опишем в файле postgres/migration/3-seed-issue.sql миграцию выдача книг</p>
+<pre><code>INSERT INTO issue(
+code,
+author,
+name,
+publisher,
+published_at,
+pages,
+topic,
+costs
+)
+VALUES (....значения....);</code></pre></li>
+</ul>
+<h2 id="-">Перезапуск БД</h2>
+<p>docker образ БД построен таким образом, что при первом запуске он выполняет последовательно все файлы из каталога скриптов. По этому, чтобы применить миграции необходимо перезапустить контейнер.
+<code>docker-compose up --build</code></p>
+<h2 id="-">Проверка данных в БД.</h2>
+<ul>
+<li><p>Выполним команду <code>echo &#39;select * from book limit 1&#39; | psql -h localhost -p 23395 -U hero -d hero</code>
+<img src="./screenshots/lab4-screen-1.png" alt="Результат работы">
+Видим, что миграция сработала и данные присутствуют в таблице book</p>
+</li>
+<li><p>Выполним команду <code>echo &#39;select * from reader limit 1&#39; | psql -h localhost -p 23395 -U hero -d hero</code>
+<img src="./screenshots/lab4-screen-2.png" alt="Результат работы">
+Видим, что миграция сработала и данные присутствуют в таблице reader</p>
+</li>
+<li><p>Выполним команду <code>echo &#39;select * from issue limit 1&#39; | psql -h localhost -p 23395 -U hero -d hero</code>
+<img src="./screenshots/lab4-screen-3.png" alt="Результат работы">
+Видим, что миграция сработала и данные присутствуют в таблице issue</p>
+</li>
+</ul>
