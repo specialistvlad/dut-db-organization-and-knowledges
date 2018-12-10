@@ -2,10 +2,7 @@
 
 Выполнил Владислав Казанцев, студент группы ИСД-31
 
-Репозиторий проекта онлайн
-https://github.com/specialistvlad/dut-db-organization-and-knowledges
-
-Отчёты доступны в папке `results`
+Репозиторий проекта [онлайн](https://github.com/specialistvlad/dut-db-organization-and-knowledges)
 
 ## План
 1. Подговка окружения к работе. Обоснование использования выбранных технологий. Подготовка инструмента формирования отчётов по лабораторным работам.
@@ -17,6 +14,14 @@ https://github.com/specialistvlad/dut-db-organization-and-knowledges
 7. Подготовка окружения с помощью современных технологий React 16, Redux, Webpack 4 и Google Material
 8. Написание пользовательского интерфейса
 
+## Отчеты
+Доступны в папке `results`
+
+### Отчеты онлайн без смс и регистрации :)
+Онлайн по адресу
+* [Лабораторная работа 1](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab1.md)
+* [Лабораторная работа 2](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab2.md)
+
 ## Подготовка
 ### Требованию к окружению:
 1. Docker 18(система контейнеризации, обязательно)
@@ -24,10 +29,10 @@ https://github.com/specialistvlad/dut-db-organization-and-knowledges
 
 #### 1. Doker
 Список поддерживаемых ОС: windows 10, ubuntu, mac
-Или по ссылке https://docs.docker.com/install/#supported-platforms
+Или по [ссылке](https://docs.docker.com/install/#supported-platforms)
 
 Инструкция по установке
-https://www.docker.com/get-started
+[https://www.docker.com/get-started](https://www.docker.com/get-started)
 
 Вы можете проверить доступность docker после установки таким командами `docker --version` и `docker-compose --version`
 
@@ -44,7 +49,7 @@ docker-compose version 1.23.2, build 1110ad01
 Скачать проект с помощью команды `git clone git@github.com:specialistvlad/dut-db-organization-and-knowledges.git`
 
 или по адресу используя браузер
-https://github.com/specialistvlad/dut-db-organization-and-knowledges/archive/master.zip
+[https://github.com/specialistvlad/dut-db-organization-and-knowledges/archive/master.zip](https://github.com/specialistvlad/dut-db-organization-and-knowledges/archive/master.zip)
 
 ## Запуск
 Перейдите в каталог проекта `cd dut-db-organization-and-knowledges`
@@ -54,7 +59,7 @@ https://github.com/specialistvlad/dut-db-organization-and-knowledges/archive/mas
 Это инициирует загрузку всех зависимостей и сборку проекта.
 Дождитесь окончания процесса.
 
-Проект будет доступен по адресу http://localhost:12345
+Проект будет доступен по адресу [http://localhost:12345](http://localhost:12345)
 
 ## Остановка
 Чтобы остановить приложение выполните:
