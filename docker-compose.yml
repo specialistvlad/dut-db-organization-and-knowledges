@@ -1,0 +1,19 @@
+version: '3'
+networks:
+  default:
+    external:
+      name: bridge
+
+services:
+  dboak-md-to-html:
+    container_name: dboak-md-to-html
+    build:
+      context: ./
+      dockerfile: ./results/Dockerfile
+    volumes:
+      - ./results/:/opt/results
+    restart: "no"
+    network_mode: bridge
+    logging:
+        options:
+            max-size: '10m'
