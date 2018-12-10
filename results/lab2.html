@@ -17,7 +17,7 @@
     - ./postgres/postgresql.conf:/postgresql.conf
     - ./postgres/migration/:/docker-entrypoint-initdb.d
   environment:
-    - POSTGRES_DB=hero
+    - POSTGRES_DB=library
   restart: always
   network_mode: bridge
   ports:
@@ -45,9 +45,9 @@
 set -e
 
 psql -v ON_ERROR_STOP=1 --username &quot;$POSTGRES_USER&quot; &lt;&lt;-EOSQL
-    CREATE USER hero;
-    GRANT ALL PRIVILEGES ON DATABASE hero TO hero;
-EOSQL</code></pre><p>Эта миграция создаст пользователя &quot;hero&quot; и даст ему проставит права доступа внутри БД</p>
+    CREATE USER library;
+    GRANT ALL PRIVILEGES ON DATABASE library TO library;
+EOSQL</code></pre><p>Эта миграция создаст пользователя &quot;library&quot; и даст ему проставит права доступа внутри БД</p>
 <h3 id="-">Запустим БД</h3>
 <p><code>docker-compose up</code></p>
 <p>Ждём пока скачается образ, запустится контейнер, выполнятся миграции.</p>
@@ -76,8 +76,8 @@ dboak-psql   | The files belonging to this database system will be owned by user
 <p>На скриншоте видно, что БД ожидает подключение.</p>
 <h2 id="-">Проверка доступности подключения к БД.</h2>
 <h3 id="-psql">Используя консольную программу psql</h3>
-<p>Выполняем команду <code>echo &#39;select 2 as test_column;&#39; | psql -h localhost -p 23395 -U hero -d hero;</code></p>
-<p>В результате SQL запрос <code>select 2 as test_column;</code> будет перенаправлен через stdin в программу psql, которая подключится с параметрами <code>-h localhost -p 23395 -U hero -d hero</code> к БД, выполнит запрос, завершится и вернет результат
+<p>Выполняем команду <code>echo &#39;select 2 as test_column;&#39; | psql -h localhost -p 23395 -U library -d library;</code></p>
+<p>В результате SQL запрос <code>select 2 as test_column;</code> будет перенаправлен через stdin в программу psql, которая подключится с параметрами <code>-h localhost -p 23395 -U library -d library</code> к БД, выполнит запрос, завершится и вернет результат
 <img src="./screenshots/lab2-screen-6.png" alt="Результат работы">
 Лог работы БД
 <img src="./screenshots/lab2-screen-7.png" alt="Результат работы"></p>

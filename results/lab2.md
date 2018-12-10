@@ -20,7 +20,7 @@ dboak-postgres:
     - ./postgres/postgresql.conf:/postgresql.conf
     - ./postgres/migration/:/docker-entrypoint-initdb.d
   environment:
-    - POSTGRES_DB=hero
+    - POSTGRES_DB=library
   restart: always
   network_mode: bridge
   ports:
@@ -51,12 +51,12 @@ dboak-postgres:
 set -e
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-    CREATE USER hero;
-    GRANT ALL PRIVILEGES ON DATABASE hero TO hero;
+    CREATE USER library;
+    GRANT ALL PRIVILEGES ON DATABASE library TO library;
 EOSQL
 ```
 
-Эта миграция создаст пользователя "hero" и даст ему проставит права доступа внутри БД
+Эта миграция создаст пользователя "library" и даст ему проставит права доступа внутри БД
 
 ### Запустим БД
 `docker-compose up`
@@ -93,9 +93,9 @@ dboak-psql   | The files belonging to this database system will be owned by user
 
 ## Проверка доступности подключения к БД.
 ### Используя консольную программу psql
-Выполняем команду `echo 'select 2 as test_column;' | psql -h localhost -p 23395 -U hero -d hero;`
+Выполняем команду `echo 'select 2 as test_column;' | psql -h localhost -p 23395 -U library -d library;`
 
-В результате SQL запрос `select 2 as test_column;` будет перенаправлен через stdin в программу psql, которая подключится с параметрами ` -h localhost -p 23395 -U hero -d hero` к БД, выполнит запрос, завершится и вернет результат
+В результате SQL запрос `select 2 as test_column;` будет перенаправлен через stdin в программу psql, которая подключится с параметрами ` -h localhost -p 23395 -U library -d library` к БД, выполнит запрос, завершится и вернет результат
 ![Результат работы](./screenshots/lab2-screen-6.png)
 Лог работы БД
 ![Результат работы](./screenshots/lab2-screen-7.png)
