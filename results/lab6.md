@@ -1,4 +1,4 @@
-# Лабораторная работа 6
+# Практическая работа 6
 Онлайн версия доступна по [ссылке](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab6.md)
 
 ## План отчёта

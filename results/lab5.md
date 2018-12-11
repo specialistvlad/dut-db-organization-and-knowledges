@@ -1,4 +1,4 @@
-# Лабораторная работа 5
+# Практическая работа 5
 Онлайн версия доступна по [ссылке](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab5.md)
 
 ## План отчёта

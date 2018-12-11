@@ -1,4 +1,4 @@
-# Лабораторная работа 3
+# Практическая работа 3
 Онлайн версия доступна по [ссылке](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab3.md)
 
 ## План отчёта
