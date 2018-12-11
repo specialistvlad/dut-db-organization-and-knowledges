@@ -6,12 +6,12 @@
 2. Использование компонентов библиотеки Google Material
 
 ## Подготовка окружения с помощью современных технологий React 16, Redux, Webpack 4, react-create-app и Google Material.
-Инициализируем пустое приложение с помощью программы create-react-app для этого выполним команду `npx create-react-app frontend; cd frontend; yarn start`
+Инициализируем пустое приложение с помощью программы create-react-app для этого выполним команды `npx create-react-app frontend; cd frontend; yarn start`
 Заготовка приложения доступна по адресу `http://localhost:3000/`
 ![Результат работы](./screenshots/lab7-screen-1.png)
 
 ## Использование компонентов библиотеки Google Material
-* Выполним команду `yarn add @material-ui/core`
+* Выполним команду `yarn add @material-ui/core` и `yarn add @material-ui/icons`
 
 * Выполним шаги из инструкции на компонент табов
 [https://material-ui.com/demos/tabs/](https://material-ui.com/demos/tabs/)

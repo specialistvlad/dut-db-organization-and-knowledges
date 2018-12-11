@@ -37,17 +37,7 @@ COPY public/ ./public
 COPY src/ ./src
 EXPOSE 8080
 RUN yarn build
-ENTRYPOINT [&quot;yarn&quot;, &quot;serve&quot;]</code></pre><h3 id="-">Файлы миграции</h3>
-<p>Файлы миграции находятся в папке ./postgres/migration/
-Создадим один файл с первой миграцией и добавим в него содержимое</p>
-<pre><code>#!/bin/bash
-set -e
-
-psql -v ON_ERROR_STOP=1 --username &quot;$POSTGRES_USER&quot; &lt;&lt;-EOSQL
-    CREATE USER library;
-    GRANT ALL PRIVILEGES ON DATABASE library TO library;
-EOSQL</code></pre><p>Эта миграция создаст пользователя &quot;library&quot; и даст ему проставит права доступа внутри БД</p>
-<h3 id="-">Запустим все контейнеры</h3>
+ENTRYPOINT [&quot;yarn&quot;, &quot;serve&quot;]</code></pre><h3 id="-">Запустим все контейнеры</h3>
 <p><code>docker-compose up --build</code></p>
 <p>Ждём пока скачается образ, загрузятся зависимости. Первый раз для каждого контейнера это длительный процесс.
 Ожидаем в консоли:</p>

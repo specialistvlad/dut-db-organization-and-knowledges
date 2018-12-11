@@ -5,7 +5,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import Input from '@material-ui/core/Input';
 import Table from './Table';
+import Search from '@material-ui/icons/Search';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 function TabContainer(props) {
   return (
@@ -40,10 +43,9 @@ class SimpleTabs extends React.Component {
     return `${base}${entity}${search ? '?search=' : ''}${search || ''}`;
   }
 
-  async handleResult(index = 0) {
-    const rows = await this.download(index);
+  async handleResult(index = 0, search) {
+    const rows = await this.download(index, search);
     const columns = this.props.columns[index];
-    console.log(this.props, index);
 
     this.setState({
       ...this.state,
@@ -52,16 +54,24 @@ class SimpleTabs extends React.Component {
     })
   }
 
-  async download(index = 0) {
-    const urls = ['book', 'reader'];
-    const url = this.buildUrl(urls[index], this.search);
+  async download(index = 0, search) {
+    const urls = ['book', 'reader', 'issue'];
+    const url = this.buildUrl(urls[index], search);
     const result = await fetch(url);
     return result.json();
   }
 
-  handleChange = async (event, index) => {
+  handleChangeTab = async (event, index) => {
     await this.setState({ value: index });
     this.handleResult(index);
+  };
+
+  componentDidMount = async () => {
+    this.handleResult();
+  };
+
+  handleChangeInput = async (event) => {
+    this.handleResult(this.state.value, event.target.value);
   };
 
   render() {
@@ -71,11 +81,22 @@ class SimpleTabs extends React.Component {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Tabs value={value} onChange={this.handleChange}>
+          <Tabs value={value} onChange={this.handleChangeTab}>
             <Tab label="Книги" href="#books"/>
             <Tab label="Читатели" href="#readers"/>
+            <Tab label="Выдача книг" href="#issue"/>
           </Tabs>
+
         </AppBar>
+          <Input
+          id="input-with-icon-adornment"
+          onChange={this.handleChangeInput}
+          startAdornment={
+            <InputAdornment position="start">
+              <Search />
+            </InputAdornment>
+          }
+        />
         <Table columns={columns} rows={rows}/>
       </div>
     );
@@ -85,6 +106,9 @@ class SimpleTabs extends React.Component {
 SimpleTabs.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
+const telFormatter = (val) => `+${val}`;
+const dateFormatter = (date) => (new Date(date)).toISOString().slice(0,10);
 
 SimpleTabs.defaultProps = {
   columns: [
@@ -141,11 +165,32 @@ SimpleTabs.defaultProps = {
     {
       name: 'home_phone',
       title: 'Домашний телефон',
+      formatter: telFormatter,
     },
     {
       name: 'work_phone',
       title: 'Рабочий телефон',
-    }]
+      formatter: telFormatter,
+    }],
+    [{
+      name: 'code',
+      title: 'инвентарный номер книги',
+    },
+    {
+      name: 'id',
+      title: 'номер читательского билета',
+    },
+    {
+      name: 'created_at',
+      title: 'дата выдачи',
+      formatter: dateFormatter,
+    },
+    {
+      name: 'return_at',
+      title: 'запланированная дата возврата',
+      formatter: dateFormatter,
+    },
+  ]
   ],
 }
 

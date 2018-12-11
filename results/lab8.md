@@ -48,22 +48,6 @@ RUN yarn build
 ENTRYPOINT ["yarn", "serve"]
 ```
 
-
-### Файлы миграции
-Файлы миграции находятся в папке ./postgres/migration/
-Создадим один файл с первой миграцией и добавим в него содержимое
-```
-#!/bin/bash
-set -e
-
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-    CREATE USER library;
-    GRANT ALL PRIVILEGES ON DATABASE library TO library;
-EOSQL
-```
-
-Эта миграция создаст пользователя "library" и даст ему проставит права доступа внутри БД
-
 ### Запустим все контейнеры
 `docker-compose up --build`
 

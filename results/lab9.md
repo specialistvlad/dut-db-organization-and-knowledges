@@ -2,77 +2,103 @@
 Онлайн версия доступна по [ссылке](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab9.md)
 
 ## План отчёта
-1. Создание пользовательского интерфейса для просмотра читателей и книг, а также возможности фильтрации
+1. Создание пользовательского интерфейса для просмотра читателей, книг и выдачи книг, а также возможности фильтрации
 
-## Создание пользовательского интерфейса для просмотра читателей и книг, а также возможности фильтрации
-Добавляем в наш docker-compose.yml файл описание нового контейнера.
+## Создание пользовательского интерфейса для просмотра читателей, книг и выдачи книг, а также возможности фильтрации
 
+Для этого нам потребуется изменить два файла
+* `frontend/src/Table.js`
+* `frontend/src/Tab.js`
 
-
-
-
-
-
+В файле `frontend/src/Table.js` нужно динамически отображать колонки исходя из параметра columns и rows.
+Смотрите исходный код файлов, пожалуйста, для получения более детальной информации.
 ```
-dboak-frontend:
-  container_name: dboak-frontend
-  depends_on:
-    - dboak-backend
-  links:
-    - dboak-backend
-  build:
-    context: ./frontend
-    dockerfile: ./Dockerfile
-  restart: "no"
-  environment:
-    - NODE_ENV=production
-  network_mode: bridge
-  ports:
-    - '32562:8080'
-  logging:
-      options:
-          max-size: '50m'
+{columns.map(item => (<TableCell>{item.title}</TableCell>))}
 ```
 
-### Добавим сервер статических файлов
-Для того, чтобы можно получить доступ к приложению в контейнере, нужно установить [сервер](https://www.npmjs.com/package/http-server)
-
-Выполним команду `yarn add static server` из директории `frontend`
-
-Создадим докер файл приложения frontend/Dockerfile
 ```
-FROM node:lts-slim
-
-WORKDIR /opt/app
-COPY package.json yarn.lock ./
-RUN yarn --frozen-lockfile
-COPY public/ ./public
-COPY src/ ./src
-EXPOSE 8080
-RUN yarn build
-ENTRYPOINT ["yarn", "serve"]
+{rows.map(row => (
+  <TableRow key={row.id}>
+    {columns.map((item, index) => (index === 0 ?
+      (<TableCell key={item.name} component="th" scope="row" >{row[item.name]}</TableCell>) :
+      (<TableCell key={item.name}>{item.formatter ? item.formatter(row[item.name]) : row[item.name]}</TableCell>)
+    ))}
+  </TableRow>
+))}
 ```
 
+А в файле `frontend/src/Tab.js` нужно добавить поиск и загрузку данных с сервера, а так же передачу параметров columns и rows в компонент Table. Смотрите исходный код файлов, пожалуйста, для получения более детальной информации.
 
-### Файлы миграции
-Файлы миграции находятся в папке ./postgres/migration/
-Создадим один файл с первой миграцией и добавим в него содержимое
 ```
-#!/bin/bash
-set -e
+buildUrl(entity, search, base = 'http://localhost:30562/') {
+  return `${base}${entity}${search ? '?search=' : ''}${search || ''}`;
+}
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-    CREATE USER library;
-    GRANT ALL PRIVILEGES ON DATABASE library TO library;
-EOSQL
+async handleResult(index = 0, search) {
+  const rows = await this.download(index, search);
+  const columns = this.props.columns[index];
+
+  this.setState({
+    ...this.state,
+    rows,
+    columns,
+  })
+}
+
+async download(index = 0, search) {
+  const urls = ['book', 'reader', 'issue'];
+  const url = this.buildUrl(urls[index], search);
+  const result = await fetch(url);
+  return result.json();
+}
+
+handleChangeTab = async (event, index) => {
+  await this.setState({ value: index });
+  this.handleResult(index);
+};
+
+componentDidMount = async () => {
+  this.handleResult();
+};
+
+handleChangeInput = async (event) => {
+  this.handleResult(this.state.value, event.target.value);
+};
 ```
 
-Эта миграция создаст пользователя "library" и даст ему проставит права доступа внутри БД
+```
+render() {
+  const { classes } = this.props;
+  const { value, columns, rows } = this.state;
 
-### Запустим все контейнеры
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Tabs value={value} onChange={this.handleChangeTab}>
+          <Tab label="Книги" href="#books"/>
+          <Tab label="Читатели" href="#readers"/>
+          <Tab label="Выдача книг" href="#issue"/>
+        </Tabs>
+
+      </AppBar>
+        <Input
+        id="input-with-icon-adornment"
+        onChange={this.handleChangeInput}
+        startAdornment={
+          <InputAdornment position="start">
+            <Search />
+          </InputAdornment>
+        }
+      />
+      <Table columns={columns} rows={rows}/>
+    </div>
+  );
+}
+```
+
+### Перезапустим все контейнеры
 `docker-compose up --build`
 
-Ждём пока скачается образ, загрузятся зависимости. Первый раз для каждого контейнера это длительный процесс.
 Ожидаем в консоли:
 ```
 dboak-frontend      | Starting up http-server, serving ./build
@@ -81,6 +107,15 @@ dboak-frontend      |   http://127.0.0.1:8080
 dboak-frontend      |   http://172.17.0.7:8080
 dboak-frontend      | Hit CTRL-C to stop the server
 ```
+
 Можно будет проверить результат работы приложения в контейнере по адресу: `http://localhost:32562`
-![Результат работы](./screenshots/lab8-screen-1.png)
-![Результат работы](./screenshots/lab8-screen-2.png)
+
+Тестируем все страницы
+![Результат работы](./screenshots/lab9-screen-1.png)
+![Результат работы](./screenshots/lab9-screen-2.png)
+![Результат работы](./screenshots/lab9-screen-3.png)
+
+Тестируем поиск(данные загружаются с сервера в реальном времени)
+![Результат работы](./screenshots/lab9-screen-4.png)
+![Результат работы](./screenshots/lab9-screen-5.png)
+![Результат работы](./screenshots/lab9-screen-6.png)

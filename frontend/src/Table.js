@@ -28,16 +28,14 @@ const SimpleTable = ({ classes, columns, rows }) => (
         </TableRow>
       </TableHead>
       <TableBody>
-        {rows.map(row => {
-          return (
-            <TableRow key={row.id}>
-              {columns.map((item, index) => (index === 0 ?
-                (<TableCell key={item.name} component="th" scope="row" >{row[item.name]}</TableCell>) :
-                (<TableCell key={item.name}>{row[item.name]}</TableCell>)
-              ))}
-            </TableRow>
-          );
-        })}
+        {rows.map(row => (
+          <TableRow key={row.id}>
+            {columns.map((item, index) => (index === 0 ?
+              (<TableCell key={item.name} component="th" scope="row" >{row[item.name]}</TableCell>) :
+              (<TableCell key={item.name}>{item.formatter ? item.formatter(row[item.name]) : row[item.name]}</TableCell>)
+            ))}
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   </Paper>
