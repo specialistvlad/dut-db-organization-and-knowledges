@@ -35,6 +35,7 @@
 * [Практическая работа 5](lab5.html)
 * [Практическая работа 6](lab6.html)
 * [Практическая работа 7](lab7.html)
+* [Практическая работа 8](lab8.html)
 
 ### Онлайн
 * [Практическая работа 1](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab1.md)
@@ -44,3 +45,4 @@
 * [Практическая работа 5](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab5.md)
 * [Практическая работа 6](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab6.md)
 * [Практическая работа 7](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab7.md)
+* [Практическая работа 8](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab8.md)

@@ -55,3 +55,21 @@ services:
     logging:
         options:
             max-size: '50m'
+  dboak-frontend:
+    container_name: dboak-frontend
+    depends_on:
+      - dboak-backend
+    links:
+      - dboak-backend
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    restart: "no"
+    environment:
+      - NODE_ENV=production
+    network_mode: bridge
+    ports:
+      - '32562:8080'
+    logging:
+        options:
+            max-size: '50m'
