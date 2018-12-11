@@ -7,6 +7,8 @@
 ## Отчёты работ онлайн
 [https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/README.md](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/README.md)
 
+Видео отчёт [https://www.youtube.com/watch?v=NDXUr40BOIo&feature=youtu.be](https://www.youtube.com/watch?v=NDXUr40BOIo&feature=youtu.be)
+
 ### Отчёты работ локально
 Доступны в папке `results/index.html`
 

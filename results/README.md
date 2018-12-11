@@ -27,6 +27,8 @@
 9. Создание пользовательского интерфейса для просмотра читателей и книг, а также возможности фильтрации
 
 ## Отчеты
+Видео отчёт [https://www.youtube.com/watch?v=NDXUr40BOIo&feature=youtu.be](https://www.youtube.com/watch?v=NDXUr40BOIo&feature=youtu.be)
+
 ### Локально
 * [Практическая работа 1](lab1.html)
 * [Практическая работа 2](lab2.html)
