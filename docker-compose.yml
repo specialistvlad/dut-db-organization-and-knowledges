@@ -34,3 +34,24 @@ services:
     logging:
         options:
             max-size: '50m'
+
+  dboak-backend:
+    container_name: dboak-backend
+    depends_on:
+      - dboak-postgres
+    links:
+      - dboak-postgres
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    restart: "no"
+    environment:
+      - NODE_ENV=production
+      - CNFG_DB__HOST=dboak-postgres
+      - CNFG_DB__PORT=5432
+    network_mode: bridge
+    ports:
+      - '30562:38562'
+    logging:
+        options:
+            max-size: '50m'

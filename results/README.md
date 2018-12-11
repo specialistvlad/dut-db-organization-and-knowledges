@@ -21,7 +21,7 @@
 2. Установка БД postgres 11 из официального образа docker. Проверка доступности подключения к БД.
 3. Описание схемы БД. Написание файлов миграции. Проверка созданных таблиц.
 4. Наполнение БД данными. Проверка данных в БД.
-5. Подготовка окружения REST сервера на основе технологии Node.js 11
+5. Подготовка окружения REST сервера на основе технологии Node.js 11. Запуск приложения в контейнере. Проверка доступности приложения в браузере.
 6. Написание оконечных точек REST сервера
 7. Подготовка окружения с помощью современных технологий React 16, Redux, Webpack 4 и Google Material
 8. Создание пользовательского интерфейса для просмотра и поиска книг
@@ -33,9 +33,11 @@
 * [Лабораторная работа 2](lab2.html)
 * [Лабораторная работа 3](lab3.html)
 * [Лабораторная работа 4](lab4.html)
+* [Лабораторная работа 5](lab5.html)
 
 ### Онлайн
 * [Лабораторная работа 1](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab1.md)
 * [Лабораторная работа 2](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab2.md)
 * [Лабораторная работа 3](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab3.md)
 * [Лабораторная работа 4](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab4.md)
+* [Лабораторная работа 5](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab5.md)

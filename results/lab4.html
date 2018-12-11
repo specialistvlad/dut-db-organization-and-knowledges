@@ -31,21 +31,19 @@ work_phone
 VALUES (....значения....);</code></pre></li>
 <li><p>Опишем в файле postgres/migration/3-seed-issue.sql миграцию выдача книг</p>
 <pre><code>INSERT INTO issue(
-code,
-author,
-name,
-publisher,
-published_at,
-pages,
-topic,
-costs
+last_name,
+first_name,
+middle_name,
+address,
+home_phone,
+work_phone
 )
 VALUES (....значения....);</code></pre></li>
 </ul>
 <h2 id="-">Перезапуск БД</h2>
 <p>docker образ БД построен таким образом, что при первом запуске он выполняет последовательно все файлы из каталога скриптов. По этому, чтобы применить миграции необходимо перезапустить контейнер.
 <code>docker-compose up --build</code></p>
-<h2 id="-">Проверка данных в БД.</h2>
+<h2 id="-">Проверка данных в БД</h2>
 <ul>
 <li><p>Выполним команду <code>echo &#39;select * from book limit 1&#39; | psql -h localhost -p 23395 -U hero -d hero</code>
 <img src="./screenshots/lab4-screen-1.png" alt="Результат работы">
