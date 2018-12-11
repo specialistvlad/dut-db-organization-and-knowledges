@@ -31,15 +31,42 @@ const styles = theme => ({
 class SimpleTabs extends React.Component {
   state = {
     value: 0,
+    search: '',
+    columns: [],
+    rows: [],
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  buildUrl(entity, search, base = 'http://localhost:30562/') {
+    return `${base}${entity}${search ? '?search=' : ''}${search || ''}`;
+  }
+
+  async handleResult(index = 0) {
+    const rows = await this.download(index);
+    const columns = this.props.columns[index];
+    console.log(this.props, index);
+
+    this.setState({
+      ...this.state,
+      rows,
+      columns,
+    })
+  }
+
+  async download(index = 0) {
+    const urls = ['book', 'reader'];
+    const url = this.buildUrl(urls[index], this.search);
+    const result = await fetch(url);
+    return result.json();
+  }
+
+  handleChange = async (event, index) => {
+    await this.setState({ value: index });
+    this.handleResult(index);
   };
 
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
+    const { value, columns, rows } = this.state;
 
     return (
       <div className={classes.root}>
@@ -49,7 +76,7 @@ class SimpleTabs extends React.Component {
             <Tab label="Читатели" href="#readers"/>
           </Tabs>
         </AppBar>
-        <Table />
+        <Table columns={columns} rows={rows}/>
       </div>
     );
   }
@@ -58,5 +85,68 @@ class SimpleTabs extends React.Component {
 SimpleTabs.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
+SimpleTabs.defaultProps = {
+  columns: [
+    [
+      {
+        name: 'code',
+        title: 'Код',
+      },
+      {
+        name: 'author',
+        title: 'автор',
+      },
+      {
+        name: 'name',
+        title: 'Название',
+      },
+      {
+        name: 'publisher',
+        title: 'Издатель',
+      },
+      {
+        name: 'published_at',
+        title: 'Год',
+      },
+      {
+        name: 'pages',
+        title: 'Страниц',
+      },
+      {
+        name: 'topic',
+        title: 'Тема',
+      },
+      {
+        name: 'costs',
+        title: 'Стоимость',
+      },
+    ],
+    [{
+      name: 'last_name',
+      title: 'Фамилия',
+    },
+    {
+      name: 'first_name',
+      title: 'Имя',
+    },
+    {
+      name: 'middle_name',
+      title: 'Отчество',
+    },
+    {
+      name: 'address',
+      title: 'Адрес',
+    },
+    {
+      name: 'home_phone',
+      title: 'Домашний телефон',
+    },
+    {
+      name: 'work_phone',
+      title: 'Рабочий телефон',
+    }]
+  ],
+}
 
 export default withStyles(styles)(SimpleTabs);

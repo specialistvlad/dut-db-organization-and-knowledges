@@ -1,0 +1,59 @@
+<h1 id="-9">Практическая работа 9</h1>
+<p>Онлайн версия доступна по <a href="https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab9.md">ссылке</a></p>
+<h2 id="-">План отчёта</h2>
+<ol>
+<li>Создание пользовательского интерфейса для просмотра читателей и книг, а также возможности фильтрации</li>
+</ol>
+<h2 id="-">Создание пользовательского интерфейса для просмотра читателей и книг, а также возможности фильтрации</h2>
+<p>Добавляем в наш docker-compose.yml файл описание нового контейнера.</p>
+<pre><code>dboak-frontend:
+  container_name: dboak-frontend
+  depends_on:
+    - dboak-backend
+  links:
+    - dboak-backend
+  build:
+    context: ./frontend
+    dockerfile: ./Dockerfile
+  restart: &quot;no&quot;
+  environment:
+    - NODE_ENV=production
+  network_mode: bridge
+  ports:
+    - &#39;32562:8080&#39;
+  logging:
+      options:
+          max-size: &#39;50m&#39;</code></pre><h3 id="-">Добавим сервер статических файлов</h3>
+<p>Для того, чтобы можно получить доступ к приложению в контейнере, нужно установить <a href="https://www.npmjs.com/package/http-server">сервер</a></p>
+<p>Выполним команду <code>yarn add static server</code> из директории <code>frontend</code></p>
+<p>Создадим докер файл приложения frontend/Dockerfile</p>
+<pre><code>FROM node:lts-slim
+
+WORKDIR /opt/app
+COPY package.json yarn.lock ./
+RUN yarn --frozen-lockfile
+COPY public/ ./public
+COPY src/ ./src
+EXPOSE 8080
+RUN yarn build
+ENTRYPOINT [&quot;yarn&quot;, &quot;serve&quot;]</code></pre><h3 id="-">Файлы миграции</h3>
+<p>Файлы миграции находятся в папке ./postgres/migration/
+Создадим один файл с первой миграцией и добавим в него содержимое</p>
+<pre><code>#!/bin/bash
+set -e
+
+psql -v ON_ERROR_STOP=1 --username &quot;$POSTGRES_USER&quot; &lt;&lt;-EOSQL
+    CREATE USER library;
+    GRANT ALL PRIVILEGES ON DATABASE library TO library;
+EOSQL</code></pre><p>Эта миграция создаст пользователя &quot;library&quot; и даст ему проставит права доступа внутри БД</p>
+<h3 id="-">Запустим все контейнеры</h3>
+<p><code>docker-compose up --build</code></p>
+<p>Ждём пока скачается образ, загрузятся зависимости. Первый раз для каждого контейнера это длительный процесс.
+Ожидаем в консоли:</p>
+<pre><code>dboak-frontend      | Starting up http-server, serving ./build
+dboak-frontend      | Available on:
+dboak-frontend      |   http://127.0.0.1:8080
+dboak-frontend      |   http://172.17.0.7:8080
+dboak-frontend      | Hit CTRL-C to stop the server</code></pre><p>Можно будет проверить результат работы приложения в контейнере по адресу: <code>http://localhost:32562</code>
+<img src="./screenshots/lab8-screen-1.png" alt="Результат работы">
+<img src="./screenshots/lab8-screen-2.png" alt="Результат работы"></p>

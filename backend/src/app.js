@@ -1,7 +1,9 @@
 const express = require('express');
+const cors = require('cors');
 const { query } = require('./db');
 
 const app = express();
+app.use(cors({ origin: true, credentials: true }));
 
 app.get('/book', async (req, res) => {
   const searchPattern = req.query.search || '';
