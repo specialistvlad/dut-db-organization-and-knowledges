@@ -1,0 +1,69 @@
+<h1 id="-6">Лабораторная работа 6</h1>
+<p>Онлайн версия доступна по <a href="https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab6.md">ссылке</a></p>
+<h2 id="-">План отчёта</h2>
+<ol>
+<li>Написание оконечных точек REST сервера.</li>
+<li>Проверка ответов в браузере.</li>
+</ol>
+<h2 id="-rest-">Написание оконечных точек REST сервера.</h2>
+<p>Добавим в файл приложения backend/src/app.js код:</p>
+<pre><code>app.get(&#39;/book&#39;, async (req, res) =&gt; {
+  const searchPattern = req.query.search || &#39;&#39;;
+  const { rows: result } = await query({
+    text: `
+    select * from book where
+      code ilike $1 OR
+      author ilike $1 OR
+      name ilike $1 OR
+      publisher ilike $1 OR
+      topic ilike $1
+    ;`,
+    values: [`%${searchPattern}%`],
+  });
+  res.json(result);
+});
+
+app.get(&#39;/reader&#39;, async (req, res) =&gt; {
+  const searchPattern = req.query.search || &#39;&#39;;
+  const { rows: result } = await query({
+    text: `
+    select * from reader where
+      last_name ilike $1 OR
+      first_name ilike $1 OR
+      middle_name ilike $1 OR
+      address ilike $1 OR
+      home_phone ilike $1 OR
+      work_phone ilike $1
+    ;`,
+    values: [`%${searchPattern}%`],
+  });
+  res.json(result);
+});</code></pre><p>Разберём как это работает:</p>
+<ul>
+<li><code>app.get(&#39;/reader&#39;, ...function...)</code> добавляет функцию обработчик, которая будет срабатывать, когда пользователь перейдет по URL /reader</li>
+<li><code>const searchPattern = req.query.search || &#39;&#39;;</code> - берет значение, которое было передано в url строке <code>http://localhost:38562/book?search=блокнот</code> в параметре search и сохраяет в переменную searchPattern. Если значение нет, то подставляется пустая строка, чтобы приложение корректно работало, когда поискового слова нет. При этом браузер кодирует символы в такой формат <code>http://localhost:38562/book?search=%D0%B1%D0%BB%D0%BE%D0%BA%D0%BD%D0%BE%D1%82</code> , а серверный фраемворк &#39;express&#39; автоматически его декодирует обратно в строку &#39;блокнот&#39;</li>
+<li>values: <code>[%${searchPattern}%&#39;]</code> - подставляем строку в шаблон, в результате получится %блокнот%</li>
+<li><code>select * from reader where
+last_name ilike $1 OR
+first_name ilike $1 OR
+middle_name ilike $1 OR
+address ilike $1 OR
+home_phone ilike $1 OR
+work_phone ilike $1
+;</code> - сам запрос, который выполняет поиск по всем текстовым полям с сформированным шаблоном переданным через параметры</li>
+<li><code>const { rows: result } = await query({.....запрос и параметры....});</code> - посколько сама функция query асинхронная то для корректной работы необходимо ключевое слово <code>await</code>, jit среда исполнения дождется результата без блокировки очереди событий по этому может быть выполнено множество запросов одновременно. Ограничение только кол-вом одновременных соединений к БД, что тоже настраивается. По этому фактическое ограничение только в RAM памяти. Далее выполняется <code>const { rows: result }</code> деструктуризация объекта с присваиванием значения в константу.</li>
+<li><code>res.json(result);</code> - отправляем результат из БД назад клиенту в браузер</li>
+</ul>
+<h2 id="-">Перезапустим контейнеры</h2>
+<p><code>docker-compose up --build</code></p>
+<h2 id="-">Проверка ответов в браузере.</h2>
+<p>Перейдем в браузере по адресу <code>http://localhost:30562/book</code> И увидим список всех книг
+<img src="./screenshots/lab6-screen-1.png" alt="Результат работы">
+Перейдем в браузере по адресу <code>http://localhost:30562/book?search=блокнот</code> И увидим отфильтрованый список книг
+<img src="./screenshots/lab6-screen-2.png" alt="Результат работы">
+Перейдем в браузере по адресу <code>http://localhost:30562/reader</code> И увидим список всех читателей
+<img src="./screenshots/lab6-screen-3.png" alt="Результат работы">
+Перейдем в браузере по адресу <code>http://localhost:30562/reader?search=євген</code> И увидим отфильтрованый список читателей
+<img src="./screenshots/lab6-screen-4.png" alt="Результат работы">
+Так же лог БД одного из запросов
+<img src="./screenshots/lab6-screen-5.png" alt="Результат работы"></p>

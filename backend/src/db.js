@@ -15,10 +15,7 @@ const connect = async () => {
   return client;
 };
 
-const query = async (...params) => {
-  const cl = client || await connect();
-  return cl.query(...params);
-};
+const query = async (...params) => (client || await connect()).query(...params);
 
 module.exports = {
   query,
