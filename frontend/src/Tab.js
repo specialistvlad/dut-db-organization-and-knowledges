@@ -55,7 +55,7 @@ class SimpleTabs extends React.Component {
   }
 
   async download(index = 0, search) {
-    const urls = ['book', 'reader', 'issue'];
+    const urls = ['catalog', 'manufactorers', 'ports', 'levels'];
     const url = this.buildUrl(urls[index], search);
     const result = await fetch(url);
     return result.json();
@@ -82,9 +82,10 @@ class SimpleTabs extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Tabs value={value} onChange={this.handleChangeTab}>
-            <Tab label="Книги" href="#books"/>
-            <Tab label="Читатели" href="#readers"/>
-            <Tab label="Выдача книг" href="#issue"/>
+            <Tab label="Каталог" href="#books"/>
+            <Tab label="Производители" href="#manufactorers"/>
+            <Tab label="Порты" href="#ports"/>
+            <Tab label="Уровни" href="#levels"/>
           </Tabs>
 
         </AppBar>
@@ -107,91 +108,75 @@ SimpleTabs.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const telFormatter = (val) => `+${val}`;
-const dateFormatter = (date) => (new Date(date)).toISOString().slice(0,10);
-
 SimpleTabs.defaultProps = {
   columns: [
-    [
-      {
-        name: 'code',
-        title: 'Код',
-      },
-      {
-        name: 'author',
-        title: 'автор',
-      },
-      {
-        name: 'name',
-        title: 'Название',
-      },
-      {
-        name: 'publisher',
-        title: 'Издатель',
-      },
-      {
-        name: 'published_at',
-        title: 'Год',
-      },
-      {
-        name: 'pages',
-        title: 'Страниц',
-      },
-      {
-        name: 'topic',
-        title: 'Тема',
-      },
-      {
-        name: 'costs',
-        title: 'Стоимость',
-      },
-    ],
     [{
-      name: 'last_name',
-      title: 'Фамилия',
+      name: 'id',
+      title: 'Номер',
     },
     {
-      name: 'first_name',
-      title: 'Имя',
+      name: 'manufactorer',
+      title: 'Производитель',
     },
     {
-      name: 'middle_name',
-      title: 'Отчество',
+      name: 'model',
+      title: 'Модель',
     },
     {
-      name: 'address',
-      title: 'Адрес',
+      name: 'level',
+      title: 'Уровень',
     },
     {
-      name: 'home_phone',
-      title: 'Домашний телефон',
-      formatter: telFormatter,
+      name: 'info',
+      title: 'Информация',
+    },
+    { name: '10Gigabit Ethernet' },
+    { name: 'Gigabit Ethernet' },
+    { name: 'Fast Ethernet' },
+    { name: 'SFP' },
+    { name: 'SFP+' },
+    { name: 'комбинированный' },
+    { name: 'USB' },
+    { name: 'microUSB' },
+    { name: 'RS-232' },
+    { name: 'UART' },
+    { name: 'последовательный порт консоли RJ-45' },
+    { name: 'порт RJ-45 для внешнего управления' },
+    { name: 'слот модуля стекирования' },
+    {
+      name: 'costs',
+      title: 'Стоимость',
     },
     {
-      name: 'work_phone',
-      title: 'Рабочий телефон',
-      formatter: telFormatter,
+      name: 'input_volts',
+      title: 'Напряжение питания',
     }],
     [{
-      name: 'code',
-      title: 'инвентарный номер книги',
-    },
-    {
       name: 'id',
-      title: 'номер читательского билета',
+      title: 'Номер',
     },
     {
-      name: 'created_at',
-      title: 'дата выдачи',
-      formatter: dateFormatter,
+      name: 'name',
+      title: 'Название',
+    }],
+    [{
+      name: 'id',
+      title: 'Номер',
     },
     {
-      name: 'return_at',
-      title: 'запланированная дата возврата',
-      formatter: dateFormatter,
+      name: 'name',
+      title: 'Название',
+    }],
+    [{
+      name: 'id',
+      title: 'Номер',
     },
-  ]
+    {
+      name: 'name',
+      title: 'Название',
+    }]
   ],
 }
+
 
 export default withStyles(styles)(SimpleTabs);

@@ -24,7 +24,7 @@ const SimpleTable = ({ classes, columns, rows }) => (
     <Table className={classes.table}>
       <TableHead>
         <TableRow>
-          {columns.map(item => (<TableCell>{item.title}</TableCell>))}
+          {columns.map(item => (<TableCell>{item.title || item.name}</TableCell>))}
         </TableRow>
       </TableHead>
       <TableBody>
@@ -32,7 +32,7 @@ const SimpleTable = ({ classes, columns, rows }) => (
           <TableRow key={row.id}>
             {columns.map((item, index) => (index === 0 ?
               (<TableCell key={item.name} component="th" scope="row" >{row[item.name]}</TableCell>) :
-              (<TableCell key={item.name}>{item.formatter ? item.formatter(row[item.name]) : row[item.name]}</TableCell>)
+              (<TableCell key={item.name}>{row[item.name]}</TableCell>)
             ))}
           </TableRow>
         ))}

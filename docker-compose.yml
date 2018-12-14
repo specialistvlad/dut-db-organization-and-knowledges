@@ -69,7 +69,7 @@ services:
       - NODE_ENV=production
     network_mode: bridge
     ports:
-      - '32562:8080'
+      - '12345:8080'
     logging:
         options:
             max-size: '50m'

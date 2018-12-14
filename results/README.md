@@ -2,32 +2,36 @@
 Выполнил студент группы ИСД-31, Владислав Казанцев
 
 ## Постановка задачи
-Вариант 3. Специализированная библиотека
+Вариант 10. "Комутатори обчислювальних мереж"
 
 Создаваемая информационная система предназначена для ведения данных:
-о книгах, о читателях, а также о перемещении книг между библиотекой и читателями, что должно найти отражение в таблицах книжный фонд и выдача книг.
+о маршрутизаторах, о производителях, о портах и другой информации.
 
-Данные, характеризующие работу библиотеки с книгами и читателями, можно сгруппировать следующим образом:
-* каталог (библиотечный код книги, автор, название, издательство, год издания, количество страниц, тема, цена)
-* читатели (номер читательского билета, фамилия, имя, отчество, домашний адрес, домашний телефон, рабочий телефон);
-* выдача книг (инвентарный номер книги, номер читательского билета, дата выдачи, запланированная дата возврата).
-
-Кроме того, в системе должны быть реализованы возможности просмотра и поиска как среди книг, так и среди читателей.
-
+Данные, характеризующие работу каталога машрутизаторов:
+* маршрутизатор (название, производитель, цена, напряжение питания, доп. информация, порты, уровень)
 
 ## План решения задачи
 1. Подговка окружения к работе. Обоснование использования выбранных технологий. Подготовка инструмента формирования отчётов по лабораторным работам.
-2. Установка БД postgres 11 из официального образа docker. Проверка доступности подключения к БД.
-3. Описание схемы БД. Написание файлов миграции. Проверка созданных таблиц.
-4. Наполнение БД данными. Проверка данных в БД.
-5. Подготовка окружения REST сервера на основе технологии Node.js 11. Запуск приложения в контейнере. Проверка доступности приложения в браузере.
-6. Написание оконечных точек REST сервера. Проверка ответов в браузере.
+2. Установка БД PostgreSQL 11 из официального образа docker. Проверка доступности подключения к БД.
+3. Моделирование ER схемы. Описание схемы БД с помощью языка SQL DDL(создание файлов миграций). Создание "представление запроса(view)" сводной таблицы каталога
+4. Наполнение БД данными. Применение файлов миграции. Проверка доступности таблиц в БД. Проверка данных в БД. Просмотр каталога.
+5. Подготовка окружения сервера на основе технологии Node.js 11. Запуск приложения в контейнере. Проверка доступности приложения в браузере.
+6. Написание оконечных точек сервера. Проверка ответов в браузере.
 7. Подготовка окружения с помощью современных технологий React 16, Redux, Webpack 4, react-create-app и Google Material. Использование компонентов библиотеки Google Material
 8. Создание контейнера для frontend приложения
-9. Создание пользовательского интерфейса для просмотра читателей и книг, а также возможности фильтрации
+9. Создание пользовательского интерфейса для просмотра каталога, а также возможности фильтрации
 
 ## Отчеты
-Видео отчёт [https://www.youtube.com/watch?v=NDXUr40BOIo&feature=youtu.be](https://www.youtube.com/watch?v=NDXUr40BOIo&feature=youtu.be)
+### Онлайн
+* [Практическая работа 1](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab1.md)
+* [Практическая работа 2](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab2.md)
+* [Практическая работа 3](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab3.md)
+* [Практическая работа 4](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab4.md)
+* [Практическая работа 5](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab5.md)
+* [Практическая работа 6](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab6.md)
+* [Практическая работа 7](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab7.md)
+* [Практическая работа 8](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab8.md)
+* [Практическая работа 9](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab9.md)
 
 ### Локально
 * [Практическая работа 1](lab1.html)
@@ -39,14 +43,3 @@
 * [Практическая работа 7](lab7.html)
 * [Практическая работа 8](lab8.html)
 * [Практическая работа 9](lab9.html)
-
-### Онлайн
-* [Практическая работа 1](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab1.md)
-* [Практическая работа 2](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab2.md)
-* [Практическая работа 3](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab3.md)
-* [Практическая работа 4](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab4.md)
-* [Практическая работа 5](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab5.md)
-* [Практическая работа 6](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab6.md)
-* [Практическая работа 7](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab7.md)
-* [Практическая работа 8](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab8.md)
-* [Практическая работа 9](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab9.md)

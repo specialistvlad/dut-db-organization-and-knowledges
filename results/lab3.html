@@ -2,56 +2,74 @@
 <p>Онлайн версия доступна по <a href="https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab3.md">ссылке</a></p>
 <h2 id="-">План отчёта</h2>
 <ol>
-<li>Описание схемы БД. Написание файлов миграции.</li>
-<li>Проверка созданных таблиц.</li>
+<li>Моделирование ER схемы.</li>
+<li>Описание схемы БД с помощью языка SQL DDL(создание файлов миграций)</li>
+<li>Создание &quot;представление запроса(view)&quot; сводной таблицы каталога</li>
 </ol>
-<h2 id="-">Описание схемы БД. Написание файлов миграции.</h2>
+<h2 id="1-er-">1. Моделирование ER схемы.</h2>
+<p>Для моделирования схемы был найден в интернете <a href="https://www.lucidchart.com/">инструмент онлайн рисования диаграм <strong>lucidchart</strong></a>.
+Была нарисована схема связей:
+<img src="./screenshots/lab3-screen-1.png" alt="Результат работы"></p>
+<ol>
+<li>Таблица switch - основная таблица, которая хранит все модели маршрутизаторов</li>
+<li>manufactorer - таблица производителей маршрутизаторов</li>
+<li>level - таблица уровней машрутизаторов</li>
+<li>ports - таблица описывающая типы портов</li>
+<li>switches_ports - связующая таблица портов и &quot;маршрутизаторов&quot; со связью многие к многим к таблице <em>switch</em> и многие к одному к таблице <em>ports</em></li>
+</ol>
+<h2 id="-sql-ddl-">Описание схемы БД с помощью языка SQL DDL(создание файлов миграций)</h2>
+<p>По скольку бесплатных инструментов для рисования и генерация из схемы в SQL DDL не было найдено для PostgreSQL то было принято решения вручную написать все sql файлы описывающие таблицы(дополнительная практика не помешает):</p>
 <p>Опишем в файле postgres/migration/2-schema.sql схему:</p>
 <ul>
-<li>Таблица &quot;Каталог&quot;(порядковый номер записи, библиотечный код книги, автор, название, издательство, год издания, количество страниц, тема, цена) и сервисные поля(дата создания, дата изменения записи, дата удаления записи)<pre><code>CREATE TABLE book(
+<li>Таблица &quot;Порты&quot; будет содержать идентификатор и название порта<pre><code>CREATE TABLE ports(
 id SERIAL PRIMARY KEY,
-code VARCHAR(25) UNIQUE NOT NULL,
-author VARCHAR(100) NOT NULL,
-name VARCHAR(500) UNIQUE NOT NULL,
-publisher VARCHAR(100) NOT NULL,
-published_at date,
-pages INTEGER NOT NULL,
-topic VARCHAR(100) NOT NULL,
+name VARCHAR(50) UNIQUE NOT NULL
+);</code></pre></li>
+<li>Таблица &quot;Уровни&quot; будет содержать идентификатор и название уровней<pre><code>CREATE TABLE levels(
+id SERIAL PRIMARY KEY,
+name VARCHAR(50) UNIQUE NOT NULL
+);</code></pre></li>
+<li>Таблица &quot;Производители&quot; будет содержать идентификатор и название производителей<pre><code>CREATE TABLE manufactorers(
+id SERIAL PRIMARY KEY,
+name VARCHAR(50) UNIQUE NOT NULL
+);</code></pre></li>
+<li>Таблица &quot;Маршрутизаторы&quot; будет содержать идентификатор, модель коммутатора, идентификатор уровня с врешним ключём, стоимость, напряжение питания, дополнительную информацию<pre><code>CREATE TABLE switches(
+id SERIAL PRIMARY KEY,
+name VARCHAR(250) UNIQUE NOT NULL,
+level_id INTEGER NOT NULL REFERENCES levels(id),
+manufactorer_id INTEGER NOT NULL REFERENCES manufactorers(id),
 costs MONEY NOT NULL,
-created_at TIMESTAMP NOT NULL DEFAULT now(),
-updated_at TIMESTAMP NOT NULL DEFAULT now(),
-removed_at TIMESTAMP
-);
-GRANT ALL PRIVILEGES ON TABLE book TO hero;</code></pre></li>
-<li>Таблица &quot;читатели&quot; (номер читательского билета, фамилия, имя, отчество, домашний адрес, домашний телефон, рабочий телефон) и сервисные поля(дата создания, дата изменения записи, дата удаления записи)<pre><code>CREATE TABLE reader(
-id SERIAL PRIMARY KEY,
-last_name VARCHAR(50) NOT NULL,
-first_name VARCHAR(50) NOT NULL,
-middle_name VARCHAR(50) NOT NULL,
-home_address VARCHAR(100) NOT NULL,
-home_phone VARCHAR(13) NOT NULL,
-work_phone VARCHAR(13),
-created_at TIMESTAMP NOT NULL DEFAULT now(),
-updated_at TIMESTAMP NOT NULL DEFAULT now(),
-removed_at TIMESTAMP
-);
-GRANT ALL PRIVILEGES ON TABLE reader TO hero;</code></pre></li>
-<li>Таблица &quot;выдача книг&quot; (порядковый номер, ссылка на книгу, ссылка на читателя, запланированная дата возврата) и сервисные поля(дата создания, дата изменения записи, дата удаления записи)<pre><code>CREATE TABLE issue(
-id SERIAL PRIMARY KEY,
-book_id INTEGER NOT NULL REFERENCES book(id),
-reader_id INTEGER NOT NULL REFERENCES reader(id),
-created_at TIMESTAMP NOT NULL DEFAULT now(),
-return_at TIMESTAMP,
-updated_at TIMESTAMP,
-removed_at TIMESTAMP
-);
-GRANT ALL PRIVILEGES ON TABLE issue TO hero;</code></pre></li>
+input_volts INTEGER NOT NULL,
+info VARCHAR(1000) NOT NULL
+);</code></pre></li>
+<li>Таблица &quot;Порты&quot; будет содержать два поля с внешним ключами на: идентифитор маршрутизатора и идентификатор порта<pre><code>CREATE TABLE switches_ports(
+switch_id INTEGER NOT NULL REFERENCES switches(id),
+port_id INTEGER NOT NULL REFERENCES ports(id)
+);</code></pre></li>
 </ul>
-<h2 id="-">Перезапуск БД</h2>
-<p>docker образ БД построен таким образом, что при первом запуске он выполняет последовательно все файлы из каталога скриптов. По этому, чтобы применить миграции необходимо перезапустить контейнер.
-<code>docker-compose up --build</code></p>
-<h2 id="-">Проверка созданных таблиц.</h2>
-<p>Выполним команду <code>echo &#39;\dt public.*&#39; | psql -h localhost -p 23395 -U library -d library;</code></p>
-<p>В результате postgreSQL-специфичный запрос <code>\dt public.*;</code> будет перенаправлен через stdin в программу psql, которая подключится с параметрами <code>-h localhost -p 23395 -U library -d library</code> к БД, выполнит запрос, завершится и вернет результат
-<img src="./screenshots/lab3-screen.png" alt="Результат работы">
-Таблицы созданы и готовы к использованию.</p>
+<h2 id="-view-">Создание &quot;представление запроса(view)&quot; сводной таблицы каталога</h2>
+<p>Для удобства использования создадим представление запроса, так называемый &quot;view&quot;:
+Опишем в файле postgres/migration/3-catalog.sql схему:</p>
+<pre><code>CREATE VIEW catalog AS
+  SELECT
+    id,
+    (SELECT name FROM manufactorers WHERE id = s.id) AS manufactorer,
+    (SELECT name FROM levels WHERE id = s.id) AS level,
+    name AS model,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 1) AS &quot;10Gigabit Ethernet&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 2) AS &quot;Gigabit Ethernet&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 3) AS &quot;Fast Ethernet&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 4) AS &quot;SFP&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 5) AS &quot;SFP+&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 6) AS &quot;комбинированный&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 7) AS &quot;USB&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 8) AS &quot;microUSB&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 9) AS &quot;RS-232&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 10) AS &quot;UART&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 11) AS &quot;последовательный порт консоли RJ-45&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 12) AS &quot;порт RJ-45 для внешнего управления&quot;,
+    (SELECT COUNT(1) FROM switches_ports WHERE id = switch_id AND port_id = 13) AS &quot;слот модуля стекирования&quot;,
+    costs,
+    input_volts,
+    info
+  FROM switches s;</code></pre>

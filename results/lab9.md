@@ -2,9 +2,9 @@
 Онлайн версия доступна по [ссылке](https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab9.md)
 
 ## План отчёта
-1. Создание пользовательского интерфейса для просмотра читателей, книг и выдачи книг, а также возможности фильтрации
+1. Создание пользовательского интерфейса для просмотра каталога, а также возможности фильтрации
 
-## Создание пользовательского интерфейса для просмотра читателей, книг и выдачи книг, а также возможности фильтрации
+## 1. Создание пользовательского интерфейса для просмотра каталога, а также возможности фильтрации
 
 Для этого нам потребуется изменить два файла
 * `frontend/src/Table.js`
@@ -13,7 +13,7 @@
 В файле `frontend/src/Table.js` нужно динамически отображать колонки исходя из параметра columns и rows.
 Смотрите исходный код файлов, пожалуйста, для получения более детальной информации.
 ```
-{columns.map(item => (<TableCell>{item.title}</TableCell>))}
+{columns.map(item => (<TableCell>{item.title || item.name}</TableCell>))}
 ```
 
 ```
@@ -21,7 +21,7 @@
   <TableRow key={row.id}>
     {columns.map((item, index) => (index === 0 ?
       (<TableCell key={item.name} component="th" scope="row" >{row[item.name]}</TableCell>) :
-      (<TableCell key={item.name}>{item.formatter ? item.formatter(row[item.name]) : row[item.name]}</TableCell>)
+      (<TableCell key={item.name}>{row[item.name]}</TableCell>)
     ))}
   </TableRow>
 ))}
@@ -46,7 +46,7 @@ async handleResult(index = 0, search) {
 }
 
 async download(index = 0, search) {
-  const urls = ['book', 'reader', 'issue'];
+  const urls = ['catalog', 'manufactorers', 'ports', 'levels'];
   const url = this.buildUrl(urls[index], search);
   const result = await fetch(url);
   return result.json();
@@ -75,9 +75,10 @@ render() {
     <div className={classes.root}>
       <AppBar position="static">
         <Tabs value={value} onChange={this.handleChangeTab}>
-          <Tab label="Книги" href="#books"/>
-          <Tab label="Читатели" href="#readers"/>
-          <Tab label="Выдача книг" href="#issue"/>
+          <Tab label="Каталог" href="#books"/>
+          <Tab label="Производители" href="#manufactorers"/>
+          <Tab label="Порты" href="#ports"/>
+          <Tab label="Уровни" href="#levels"/>
         </Tabs>
 
       </AppBar>
@@ -112,10 +113,8 @@ dboak-frontend      | Hit CTRL-C to stop the server
 
 Тестируем все страницы
 ![Результат работы](./screenshots/lab9-screen-1.png)
-![Результат работы](./screenshots/lab9-screen-2.png)
-![Результат работы](./screenshots/lab9-screen-3.png)
+![Результат работы](./screenshots/lab9-screen-4.png)
 
 Тестируем поиск(данные загружаются с сервера в реальном времени)
-![Результат работы](./screenshots/lab9-screen-4.png)
-![Результат работы](./screenshots/lab9-screen-5.png)
-![Результат работы](./screenshots/lab9-screen-6.png)
+![Результат работы](./screenshots/lab9-screen-2.png)
+![Результат работы](./screenshots/lab9-screen-3.png)

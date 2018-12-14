@@ -2,9 +2,9 @@
 <p>Онлайн версия доступна по <a href="https://github.com/specialistvlad/dut-db-organization-and-knowledges/blob/master/results/lab9.md">ссылке</a></p>
 <h2 id="-">План отчёта</h2>
 <ol>
-<li>Создание пользовательского интерфейса для просмотра читателей, книг и выдачи книг, а также возможности фильтрации</li>
+<li>Создание пользовательского интерфейса для просмотра каталога, а также возможности фильтрации</li>
 </ol>
-<h2 id="-">Создание пользовательского интерфейса для просмотра читателей, книг и выдачи книг, а также возможности фильтрации</h2>
+<h2 id="1-">1. Создание пользовательского интерфейса для просмотра каталога, а также возможности фильтрации</h2>
 <p>Для этого нам потребуется изменить два файла</p>
 <ul>
 <li><code>frontend/src/Table.js</code></li>
@@ -12,11 +12,11 @@
 </ul>
 <p>В файле <code>frontend/src/Table.js</code> нужно динамически отображать колонки исходя из параметра columns и rows.
 Смотрите исходный код файлов, пожалуйста, для получения более детальной информации.</p>
-<pre><code>{columns.map(item =&gt; (&lt;TableCell&gt;{item.title}&lt;/TableCell&gt;))}</code></pre><pre><code>{rows.map(row =&gt; (
+<pre><code>{columns.map(item =&gt; (&lt;TableCell&gt;{item.title || item.name}&lt;/TableCell&gt;))}</code></pre><pre><code>{rows.map(row =&gt; (
   &lt;TableRow key={row.id}&gt;
     {columns.map((item, index) =&gt; (index === 0 ?
       (&lt;TableCell key={item.name} component=&quot;th&quot; scope=&quot;row&quot; &gt;{row[item.name]}&lt;/TableCell&gt;) :
-      (&lt;TableCell key={item.name}&gt;{item.formatter ? item.formatter(row[item.name]) : row[item.name]}&lt;/TableCell&gt;)
+      (&lt;TableCell key={item.name}&gt;{row[item.name]}&lt;/TableCell&gt;)
     ))}
   &lt;/TableRow&gt;
 ))}</code></pre><p>А в файле <code>frontend/src/Tab.js</code> нужно добавить поиск и загрузку данных с сервера, а так же передачу параметров columns и rows в компонент Table. Смотрите исходный код файлов, пожалуйста, для получения более детальной информации.</p>
@@ -36,7 +36,7 @@ async handleResult(index = 0, search) {
 }
 
 async download(index = 0, search) {
-  const urls = [&#39;book&#39;, &#39;reader&#39;, &#39;issue&#39;];
+  const urls = [&#39;catalog&#39;, &#39;manufactorers&#39;, &#39;ports&#39;, &#39;levels&#39;];
   const url = this.buildUrl(urls[index], search);
   const result = await fetch(url);
   return result.json();
@@ -61,9 +61,10 @@ handleChangeInput = async (event) =&gt; {
     &lt;div className={classes.root}&gt;
       &lt;AppBar position=&quot;static&quot;&gt;
         &lt;Tabs value={value} onChange={this.handleChangeTab}&gt;
-          &lt;Tab label=&quot;Книги&quot; href=&quot;#books&quot;/&gt;
-          &lt;Tab label=&quot;Читатели&quot; href=&quot;#readers&quot;/&gt;
-          &lt;Tab label=&quot;Выдача книг&quot; href=&quot;#issue&quot;/&gt;
+          &lt;Tab label=&quot;Каталог&quot; href=&quot;#books&quot;/&gt;
+          &lt;Tab label=&quot;Производители&quot; href=&quot;#manufactorers&quot;/&gt;
+          &lt;Tab label=&quot;Порты&quot; href=&quot;#ports&quot;/&gt;
+          &lt;Tab label=&quot;Уровни&quot; href=&quot;#levels&quot;/&gt;
         &lt;/Tabs&gt;
 
       &lt;/AppBar&gt;
@@ -89,9 +90,7 @@ dboak-frontend      |   http://172.17.0.7:8080
 dboak-frontend      | Hit CTRL-C to stop the server</code></pre><p>Можно будет проверить результат работы приложения в контейнере по адресу: <code>http://localhost:32562</code></p>
 <p>Тестируем все страницы
 <img src="./screenshots/lab9-screen-1.png" alt="Результат работы">
+<img src="./screenshots/lab9-screen-4.png" alt="Результат работы"></p>
+<p>Тестируем поиск(данные загружаются с сервера в реальном времени)
 <img src="./screenshots/lab9-screen-2.png" alt="Результат работы">
 <img src="./screenshots/lab9-screen-3.png" alt="Результат работы"></p>
-<p>Тестируем поиск(данные загружаются с сервера в реальном времени)
-<img src="./screenshots/lab9-screen-4.png" alt="Результат работы">
-<img src="./screenshots/lab9-screen-5.png" alt="Результат работы">
-<img src="./screenshots/lab9-screen-6.png" alt="Результат работы"></p>
